@@ -3,22 +3,32 @@ services:
     image: postgres
     container_name: postgres
     restart: always
-
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD : admin
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: produits
-
 
   adminer:
     image: adminer
     container_name: adminer
     restart: always
     ports:
-      - 8085:8080
+      - "8085:8080"
 
-
-
-
+  produit-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: produit-container
+    restart: always
+    ports:
+      - "8084:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/produits
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres
