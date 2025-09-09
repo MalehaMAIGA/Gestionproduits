@@ -3,6 +3,8 @@ package com.produitm.produitm.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,11 @@ public class Produit {
     private String nom;
     private double price;
 
+   @ManyToMany
+   @JoinTable(
+           name= "product_category",
+           joinColumns = @JoinColumn(name ="produit_id"),
+           inverseJoinColumns = @JoinColumn(name = "category_id")
+   )
+    private List<Category> categoryList;
 }
